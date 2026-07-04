@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       items.forEach((other) => {
         other.classList.remove("active");
+
         const otherButton = other.querySelector("button");
         if (otherButton) {
           otherButton.setAttribute("aria-expanded", "false");
@@ -26,71 +27,91 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* Carrossel automático + arrastar com dedo no mobile */
+  /* Carrossel automático + arrastar no mobile */
   const carousel = document.querySelector(".cards-window");
   const track = document.querySelector(".activity-track");
 
-  if (carousel && track) {
-    if (!track.dataset.cloned) {
-      track.innerHTML += track.innerHTML;
-      track.dataset.cloned = "true";
-    }
+  if (!carousel || !track) return;
 
-    let paused = false;
-    let pauseTimer = null;
-    const speed = 0.45;
+  const getCards = () => Array.from(track.querySelectorAll(".activity-card"));
 
-    function getLoopPoint() {
-      return track.scrollWidth / 2;
-    }
+  let autoTimer = null;
+  let resumeTimer = null;
 
-    function autoMove() {
-      if (!paused) {
-        carousel.scrollLeft += speed;
+  function getClosestCardIndex() {
+    const cards = getCards();
+    const carouselCenter = carousel.scrollLeft + carousel.clientWidth / 2;
 
-        if (carousel.scrollLeft >= getLoopPoint()) {
-          carousel.scrollLeft -= getLoopPoint();
-        }
+    let closestIndex = 0;
+    let smallestDistance = Infinity;
+
+    cards.forEach((card, index) => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const distance = Math.abs(carouselCenter - cardCenter);
+
+      if (distance < smallestDistance) {
+        smallestDistance = distance;
+        closestIndex = index;
       }
-
-      requestAnimationFrame(autoMove);
-    }
-
-    function pauseTemporarily() {
-      paused = true;
-      clearTimeout(pauseTimer);
-
-      pauseTimer = setTimeout(() => {
-        paused = false;
-      }, 1800);
-    }
-
-    carousel.addEventListener("pointerdown", () => {
-      paused = true;
     });
 
-    carousel.addEventListener("pointerup", pauseTemporarily);
-    carousel.addEventListener("pointercancel", pauseTemporarily);
-    carousel.addEventListener("touchend", pauseTemporarily);
-
-    carousel.addEventListener("mouseenter", () => {
-      paused = true;
-    });
-
-    carousel.addEventListener("mouseleave", () => {
-      paused = false;
-    });
-
-    carousel.addEventListener(
-      "scroll",
-      () => {
-        if (carousel.scrollLeft >= getLoopPoint()) {
-          carousel.scrollLeft -= getLoopPoint();
-        }
-      },
-      { passive: true }
-    );
-
-    autoMove();
+    return closestIndex;
   }
+
+  function goToCard(index) {
+    const cards = getCards();
+    if (!cards.length) return;
+
+    const card = cards[index];
+
+    const left =
+      card.offsetLeft - carousel.clientWidth / 2 + card.offsetWidth / 2;
+
+    carousel.scrollTo({
+      left,
+      behavior: "smooth",
+    });
+  }
+
+  function nextCard() {
+    const cards = getCards();
+    if (!cards.length) return;
+
+    const currentIndex = getClosestCardIndex();
+    const nextIndex = currentIndex >= cards.length - 1 ? 0 : currentIndex + 1;
+
+    goToCard(nextIndex);
+  }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(nextCard, 2400);
+  }
+
+  function stopAuto() {
+    if (autoTimer) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+  }
+
+  function resumeAuto() {
+    clearTimeout(resumeTimer);
+
+    resumeTimer = setTimeout(() => {
+      startAuto();
+    }, 2200);
+  }
+
+  carousel.addEventListener("touchstart", stopAuto, { passive: true });
+  carousel.addEventListener("touchend", resumeAuto, { passive: true });
+
+  carousel.addEventListener("pointerdown", stopAuto);
+  carousel.addEventListener("pointerup", resumeAuto);
+  carousel.addEventListener("pointercancel", resumeAuto);
+
+  carousel.addEventListener("mouseenter", stopAuto);
+  carousel.addEventListener("mouseleave", startAuto);
+
+  startAuto();
 });
