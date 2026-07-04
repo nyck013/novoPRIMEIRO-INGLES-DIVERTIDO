@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
       items.forEach((other) => {
         other.classList.remove("active");
         const otherButton = other.querySelector("button");
-        if (otherButton) otherButton.setAttribute("aria-expanded", "false");
+        if (otherButton) {
+          otherButton.setAttribute("aria-expanded", "false");
+        }
       });
 
       if (!isActive) {
@@ -24,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* Carrossel automático + dedo no mobile */
+  /* Carrossel automático + arrastar com dedo no mobile */
   const carousel = document.querySelector(".cards-window");
   const track = document.querySelector(".activity-track");
 
@@ -79,11 +81,15 @@ document.addEventListener("DOMContentLoaded", () => {
       paused = false;
     });
 
-    carousel.addEventListener("scroll", () => {
-      if (carousel.scrollLeft >= getLoopPoint()) {
-        carousel.scrollLeft -= getLoopPoint();
-      }
-    }, { passive: true });
+    carousel.addEventListener(
+      "scroll",
+      () => {
+        if (carousel.scrollLeft >= getLoopPoint()) {
+          carousel.scrollLeft -= getLoopPoint();
+        }
+      },
+      { passive: true }
+    );
 
     autoMove();
   }
