@@ -294,40 +294,41 @@ p, span, li, a, small { font-family: var(--font-body); }
   position: relative;
   z-index: 4;
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   padding: 8px 0 38px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  scrollbar-width: none;
+  touch-action: pan-x;
 }
+
+.cards-window::-webkit-scrollbar {
+  display: none;
+}
+
+.cards-window:active {
+  cursor: grabbing;
+}
+
+/* Removido para não criar linha/faixa em cima das imagens no mobile */
 .cards-window::before,
 .cards-window::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 38px;
-  z-index: 6;
-  width: min(16vw, 170px);
-  pointer-events: none;
+  display: none !important;
 }
-.cards-window::before {
-  left: 0;
-  background: linear-gradient(90deg, rgba(164,198,255,.98), rgba(164,198,255,0));
-}
-.cards-window::after {
-  right: 0;
-  background: linear-gradient(270deg, rgba(164,198,255,.98), rgba(164,198,255,0));
-}
+
 .activity-track {
   width: max-content;
   display: flex;
   gap: clamp(14px, 2vw, 28px);
   padding-left: max(22px, 8vw);
-  will-change: transform;
-  animation: kitCarousel 24s linear infinite;
+  padding-right: max(22px, 8vw);
+  animation: none !important;
+  transform: none !important;
 }
-.cards-window:hover .activity-track { animation-play-state: paused; }
-@keyframes kitCarousel {
-  from { transform: translateX(0); }
-  to { transform: translateX(-33.333%); }
-}
+
 .activity-card {
   flex: 0 0 auto;
   width: clamp(144px, 18vw, 250px);
@@ -336,8 +337,16 @@ p, span, li, a, small { font-family: var(--font-body); }
   overflow: hidden;
   filter: drop-shadow(0 16px 20px rgba(0, 78, 205, .18));
   transform: translateZ(0);
+  scroll-snap-align: center;
+  background: #ffffff;
 }
-.activity-card img { object-fit: cover; }
+
+.activity-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
 .carousel-indicator {
   position: absolute;
   left: 50%;
@@ -437,13 +446,15 @@ p, span, li, a, small { font-family: var(--font-body); }
   font-size: 18px;
 }
 .testimonials {
+  position: relative;
+  z-index: 8;
   height: clamp(250px, 34vw, 405px);
   transform: rotate(-2deg);
   filter: drop-shadow(0 18px 24px rgba(0,0,0,.18));
 }
 .dashed-curve {
   position: absolute;
-  z-index: 5;
+  z-index: 2;
   left: -12%;
   right: -12%;
   bottom: 44px;
@@ -803,7 +814,9 @@ p, span, li, a, small { font-family: var(--font-body); }
   .activity-track {
     gap: 14px;
     padding-left: 18px;
-    animation-duration: 28s;
+    padding-right: 18px;
+    animation: none !important;
+    transform: none !important;
   }
   .activity-card {
     width: 142px;
@@ -877,4 +890,24 @@ p, span, li, a, small { font-family: var(--font-body); }
   .price-wrap { margin-top: 4px; }
 }
 
+/* Correções finais */
+.stat i {
+  line-height: 1 !important;
+  transform: scale(1.12);
+}
 
+/* No mobile, remove a linha pontilhada para não passar por cima da imagem */
+@media (max-width: 560px) {
+  .why-section .dashed-curve {
+    display: none !important;
+  }
+
+  .cards-window::before,
+  .cards-window::after {
+    display: none !important;
+  }
+
+  .carousel-indicator {
+    display: none;
+  }
+}
