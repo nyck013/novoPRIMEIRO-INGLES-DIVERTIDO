@@ -924,3 +924,54 @@ p, span, li, a, small { font-family: var(--font-body); }
     display: none;
   }
 }
+/* Oferta importada do primeiro site — escopo isolado */
+.offer-section--card{
+  min-height:auto;
+  padding:clamp(70px,8vw,110px) 16px clamp(145px,14vw,210px);
+}
+.offer-section--card .pid-offer-card{
+  position:relative;
+  z-index:4;
+  width:min(760px,100%);
+  background:#fff;
+  border:5px solid rgba(255,255,255,.35);
+  border-radius:42px;
+  padding:clamp(24px,4vw,44px);
+  box-shadow:0 30px 70px rgba(0,48,130,.24);
+  text-align:left;
+}
+.pid-offer-header{text-align:center}
+.pid-offer-logo{width:clamp(92px,11vw,145px);height:auto;margin:0 auto 10px;display:block}
+.pid-offer-tag{display:inline-flex;align-items:center;gap:8px;background:#fff4c7;color:#7a5700;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.offer-section--card .pid-offer-header h2{margin:14px auto 6px;color:var(--azul-principal);font-size:clamp(25px,3.2vw,39px);line-height:1.05;max-width:620px}
+.pid-offer-header p{margin:0;color:var(--cinza-texto);font-weight:800}
+.pid-offer-list{margin:28px 0 18px;display:grid;gap:11px}
+.pid-offer-list>div{display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:center;border:1px solid #dbe8ff;background:#fbfdff;border-radius:16px;padding:13px 15px}
+.pid-offer-list i{color:#19a55a;font-size:18px}
+.pid-offer-list span{display:flex;flex-direction:column;min-width:0}
+.pid-offer-list strong{font-size:15px;color:#15233f}
+.pid-offer-list small{font-size:12px;color:#6f7c94;font-weight:700}
+.pid-offer-list b{font-size:13px;color:#7a86a0}
+.pid-offer-total{display:flex;justify-content:space-between;align-items:center;background:#edf5ff;border-radius:15px;padding:14px 17px;color:#3d506f;font-weight:800}
+.pid-offer-total strong{font-size:20px;color:var(--azul-principal)}
+.pid-price-block{text-align:center;margin:24px 0 18px}
+.pid-price-block>span{font-size:13px;color:#6f7c94;font-weight:800}
+.pid-price{display:flex;align-items:flex-start;justify-content:center;color:var(--azul-principal);line-height:.85;margin:8px 0}
+.pid-price strong{font-size:clamp(72px,10vw,92px);font-weight:950;letter-spacing:-.06em}
+.pid-price small{font-size:22px;font-weight:950;margin-top:9px}
+.pid-price small:last-child{margin-top:40px}
+.pid-price-block p{font-size:12px;color:#6f7c94;font-weight:800;margin:0}
+.pid-offer-cta{display:flex!important;width:100%;justify-content:center;text-align:center;margin-top:4px}
+.pid-payment-trust{display:flex;justify-content:center;gap:12px 20px;flex-wrap:wrap;margin-top:17px;text-align:center}
+.pid-payment-trust span{font-size:11px;color:#6f7c94;font-weight:800}
+.pid-payment-trust i{color:#19a55a;margin-right:4px}
+@media (max-width:640px){
+  .offer-section--card{padding-left:10px;padding-right:10px}
+  .offer-section--card .pid-offer-card{padding:24px 14px;border-radius:30px;border-width:3px}
+  .pid-offer-list>div{grid-template-columns:20px 1fr auto;padding:11px 10px;gap:8px}
+  .pid-offer-list strong{font-size:13px}.pid-offer-list small{font-size:10.5px}.pid-offer-list b{font-size:11px}
+  .pid-offer-total{font-size:12px;padding:12px}.pid-offer-total strong{font-size:16px}
+  .pid-price strong{font-size:72px}.pid-price small{font-size:18px}.pid-price small:last-child{margin-top:34px}
+  .pid-offer-cta{font-size:13px!important;padding-inline:10px!important}
+  .pid-payment-trust{gap:8px 12px}.pid-payment-trust span{font-size:9.5px}
+}
